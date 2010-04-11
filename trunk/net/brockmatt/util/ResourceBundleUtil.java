@@ -31,7 +31,7 @@ public class ResourceBundleUtil {
 		BundleLocale cachekey = new BundleLocale(baseName, locale);
 
 		// resource bundle already cached?
-		SelfReferencingResourceBundle bundle = (SelfReferencingResourceBundle)cache.get(cachekey);
+		ReflectiveResourceBundle bundle = (ReflectiveResourceBundle)cache.get(cachekey);
 		if (bundle == null) {
 			String key;
 			ResourceBundle fetchedBundle = ResourceBundle.getBundle(baseName, locale);
@@ -44,7 +44,7 @@ public class ResourceBundleUtil {
 				messages.put(key, translateMessage(fetchedBundle, key)); // figure out any inline refs before storing
 				i++;
 			}
-			bundle = new SelfReferencingResourceBundle(messages);
+			bundle = new ReflectiveResourceBundle(messages);
 			cache.put(cachekey, bundle);
 		}
 		return bundle;
@@ -69,11 +69,11 @@ public class ResourceBundleUtil {
 	}
 
 	// Pretty basic bundle
-	private static final class SelfReferencingResourceBundle extends ResourceBundle {
+	private static final class ReflectiveResourceBundle extends ResourceBundle {
 		private Map<String, String> messages;
 		private Enumeration<String> keys;
 
-		public SelfReferencingResourceBundle(Map<String, String> messages) {
+		public ReflectiveResourceBundle(Map<String, String> messages) {
 			this.messages = messages;
 			this.keys = Collections.enumeration(messages.keySet());
 		}
