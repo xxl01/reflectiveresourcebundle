@@ -12,6 +12,28 @@ import java.util.ResourceBundle;
 /**
  * Injects our own resource bundle into the context so JSP formatters work correctly with the
  * self-referencing ResourceBundles (see: {@link net.brockmatt.util.ResourceBundleUtil} for more info)
+ *
+ * To use in your Stripes web application, you must add this class to the list of interceptors in the Stripes servlet
+ * filter configuration:
+ *
+ *  <filter>
+ *    <display-name>Stripes Filter</display-name>
+ *    <filter-name>StripesFilter</filter-name>
+ *    <filter-class>net.sourceforge.stripes.controller.StripesFilter</filter-class>
+ *      ...
+ *    <init-param>
+ *      <param-name>Interceptor.Classes</param-name>
+ *      <param-value>
+ *		    net.brockmatt.stripes.interceptor.ResourceBundleInterceptor
+ *		  </param-value>
+ *	  </init-param>
+ *	  <init-param>
+ *	 	  <param-name>LocalizationBundleFactory.Class</param-name>
+ *		  <param-value>net.brockmatt.stripes.localization.ReflectiveLocalizationBundleFactory</param-value>
+ *	  </init-param>
+ *    ...
+ *  </filter>
+ *
  */
 @Intercepts(LifecycleStage.ResolutionExecution)
 public class ResourceBundleInterceptor implements Interceptor {
